@@ -1,0 +1,15 @@
+.containerMain{
+    display: flex;
+    list-style: none;
+}
+.movieInformation{
+    margin-left: 15px;
+}
+.genresList{
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+.genresList > li:not(:last-child){
+    margin-right: 10px;
+}
