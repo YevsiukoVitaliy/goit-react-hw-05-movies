@@ -31,7 +31,7 @@ const Movies = () => {
         <ul>
           {results.map(({ title, id }) => (
             <li key={id}>
-              <Link to={`/movies/${id}`}>{title}</Link>
+              <Link to={`movies/${id}`}>{title}</Link>
             </li>
           ))}
         </ul>

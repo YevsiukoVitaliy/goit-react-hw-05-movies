@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReplyAll } from '@fortawesome/free-solid-svg-icons';
@@ -46,12 +46,12 @@ const MovieDetails = () => {
   }, [id]);
   return (
     <div>
-      <button onClick={() => navigate(-1)}>
-        <FontAwesomeIcon icon={faReplyAll} />
-        Go back
-      </button>
       {status && (
         <div>
+          <button onClick={() => navigate(-1)}>
+            <FontAwesomeIcon icon={faReplyAll} />
+            Go back
+          </button>
           <div className={css.containerMain}>
             <img src={poster_path} alt="" width="200px" height="300px" />
             <div className={css.movieInformation}>
@@ -71,16 +71,18 @@ const MovieDetails = () => {
           </div>
           <hr />
           <p>Additional information</p>
-          <ul>
-            <li>
-              <StyledLink to="cast">Cast</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="reviews">Reviews</StyledLink>
-            </li>
-          </ul>
-          <hr />
-          <Outlet />
+          <Suspense>
+            <ul>
+              <li>
+                <StyledLink to="cast">Cast</StyledLink>
+              </li>
+              <li>
+                <StyledLink to="reviews">Reviews</StyledLink>
+              </li>
+            </ul>
+            <hr />
+            <Outlet />
+          </Suspense>
         </div>
       )}
     </div>

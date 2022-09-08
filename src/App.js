@@ -1,10 +1,10 @@
 import css from './app.module.css';
 import { StyledLink } from './StyledLink/StyledLink';
 import { Route, Routes } from 'react-router-dom';
-import Home from './component/Home/Home';
-import Movies from './component/Movies/Movies';
-import NotFound from './component/NotFound/NotFound';
 import { Suspense, lazy } from 'react';
+const Home = lazy(() => import('./component/Home/Home.js'));
+const Movies = lazy(() => import('./component/Movies/Movies.js'));
+const NotFound = lazy(() => import('./component/NotFound/NotFound.js'));
 const MovieDetails = lazy(() =>
   import('./component/MovieDetails/MovieDetails.js')
 );
