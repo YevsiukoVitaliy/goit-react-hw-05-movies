@@ -1,9 +1,10 @@
 import { Suspense, useEffect, useState } from 'react';
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, Outlet, useLocation, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReplyAll } from '@fortawesome/free-solid-svg-icons';
 import { StyledLink } from '../../StyledLink/StyledLink';
 import css from './MovieDetails.module.css';
+import { MovieDetailsFetch } from 'services';
 
 const MovieDetails = () => {
   const [original_title, setOriginal_title] = useState('');
@@ -16,12 +17,12 @@ const MovieDetails = () => {
   const [release_date, setRelease_date] = useState('');
   const [status, setStatus] = useState(false);
   const { id } = useParams('');
-  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+  const backLinkHref = location.state?.from;
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=d8a03c709b4adc0e172e0837e1f73c29&language=en-US`
-    ).then(response =>
+    MovieDetailsFetch(id).then(response =>
       response
         .json()
         .then(
@@ -48,10 +49,10 @@ const MovieDetails = () => {
     <div>
       {status && (
         <div>
-          <button onClick={() => navigate(-1)}>
+          <Link to={backLinkHref}>
             <FontAwesomeIcon icon={faReplyAll} />
             Go back
-          </button>
+          </Link>
           <div className={css.containerMain}>
             <img src={poster_path} alt="" width="200px" height="300px" />
             <div className={css.movieInformation}>
@@ -71,16 +72,26 @@ const MovieDetails = () => {
           </div>
           <hr />
           <p>Additional information</p>
-          <Suspense>
-            <ul>
-              <li>
-                <StyledLink to="cast">Cast</StyledLink>
-              </li>
-              <li>
-                <StyledLink to="reviews">Reviews</StyledLink>
-              </li>
-            </ul>
-            <hr />
+          <ul>
+            <li>
+              <StyledLink
+                to="cast"
+                state={{ from: location.state?.from ?? '/' }}
+              >
+                Cast
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="reviews"
+                state={{ from: location.state?.from ?? '/' }}
+              >
+                Reviews
+              </StyledLink>
+            </li>
+          </ul>
+          <hr />
+          <Suspense fallback={<div>Loading...</div>}>
             <Outlet />
           </Suspense>
         </div>

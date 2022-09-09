@@ -6,7 +6,7 @@ const NotFound = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate(-1);
+      navigate('/');
     }, 1000);
   }, [navigate]);
   return <h2>Sorry,not found</h2>;

@@ -1,20 +1,34 @@
-import { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
+import { MoviesFetch } from 'services';
 
 const Movies = () => {
+  const location = useLocation();
   const [results, setResults] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams({ query: '' });
-  const query = searchParams.get('query');
-  const handleSubmit = e => {
-    e.preventDefault();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') ?? '';
 
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=d8a03c709b4adc0e172e0837e1f73c29&language=en-US&query=${query}&page=1&include_adult=false`
-    ).then(response =>
+  useEffect(() => {
+    if (query === '') return;
+
+    MoviesFetch(query).then(response =>
       response.json().then(({ results }) => {
         setResults(results);
       })
     );
+  }, []);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    MoviesFetch(query).then(response =>
+      response.json().then(({ results }) => {
+        setResults(results);
+      })
+    );
+  };
+  const changeQuery = value => {
+    setSearchParams(value !== '' ? { query: value } : {});
   };
 
   return (
@@ -23,7 +37,7 @@ const Movies = () => {
         <input
           type="text"
           value={query}
-          onChange={e => setSearchParams({ query: e.target.value })}
+          onChange={e => changeQuery(e.target.value)}
         />
         <button type="submit">Search</button>
       </form>
@@ -31,7 +45,9 @@ const Movies = () => {
         <ul>
           {results.map(({ title, id }) => (
             <li key={id}>
-              <Link to={`movies/${id}`}>{title}</Link>
+              <Link to={`/movies/${id}`} state={{ from: location }}>
+                {title}
+              </Link>
             </li>
           ))}
         </ul>

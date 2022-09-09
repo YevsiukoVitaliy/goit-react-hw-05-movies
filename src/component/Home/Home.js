@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { HomeFetch } from 'services';
 
 const Home = () => {
   const [trending, setTrending] = useState([]);
+  const location = useLocation();
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/trending/movie/week?api_key=d8a03c709b4adc0e172e0837e1f73c29`
-    )
+    HomeFetch()
       .then(response => response.json())
       .then(({ results }) => setTrending(results));
   }, []);
@@ -16,7 +16,9 @@ const Home = () => {
       <ul>
         {trending.map(({ id, title }) => (
           <li key={id}>
-            <NavLink to={`movies/${id}`}>{title}</NavLink>
+            <NavLink to={`/movies/${id}`} state={{ from: location }}>
+              {title}
+            </NavLink>
           </li>
         ))}
       </ul>

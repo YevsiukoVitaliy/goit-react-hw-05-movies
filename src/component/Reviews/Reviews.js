@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ReviewsFetch } from 'services';
 
 const Reviews = () => {
   const [results, setResults] = useState([]);
   const { id } = useParams('');
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=d8a03c709b4adc0e172e0837e1f73c29&language=en-US&page=1`
-    ).then(response =>
+    ReviewsFetch(id).then(response =>
       response.json().then(({ results }) => {
         setResults(results);
       })

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { CastFetch } from 'services';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
@@ -11,9 +12,7 @@ const Cast = () => {
     setCastPlus(castPlus + 10);
   };
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=d8a03c709b4adc0e172e0837e1f73c29&language=en-US`
-    ).then(response =>
+    CastFetch(id).then(response =>
       response.json().then(({ cast }) => {
         setCast(cast);
       })
