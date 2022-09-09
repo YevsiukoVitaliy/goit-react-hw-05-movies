@@ -5,28 +5,32 @@ import { MoviesFetch } from 'services';
 const Movies = () => {
   const location = useLocation();
   const [results, setResults] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams('');
   const query = searchParams.get('query') ?? '';
-
-  useEffect(() => {
-    if (query === '') return;
-
-    MoviesFetch(query).then(response =>
-      response.json().then(({ results }) => {
-        setResults(results);
-      })
-    );
-  }, []);
+  const [quer, setQuer] = useState(() => {
+    return JSON.parse(localStorage.getItem('quer'));
+  });
 
   const handleSubmit = e => {
     e.preventDefault();
-
     MoviesFetch(query).then(response =>
       response.json().then(({ results }) => {
         setResults(results);
       })
     );
+    setQuer(query);
   };
+
+  useEffect(() => {
+    if (quer) {
+      localStorage.setItem('quer', JSON.stringify(quer));
+      MoviesFetch(quer).then(response =>
+        response.json().then(({ results }) => {
+          setResults(results);
+        })
+      );
+    }
+  }, [quer]);
   const changeQuery = value => {
     setSearchParams(value !== '' ? { query: value } : {});
   };

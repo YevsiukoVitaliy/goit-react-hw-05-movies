@@ -18,7 +18,6 @@ const MovieDetails = () => {
   const [status, setStatus] = useState(false);
   const { id } = useParams('');
   const location = useLocation();
-  console.log(location);
   const backLinkHref = location.state?.from;
 
   useEffect(() => {
