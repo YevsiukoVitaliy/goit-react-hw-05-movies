@@ -7,11 +7,9 @@ const Reviews = () => {
   const { id } = useParams('');
 
   useEffect(() => {
-    ReviewsFetch(id).then(response =>
-      response.json().then(({ results }) => {
-        setResults(results);
-      })
-    );
+    ReviewsFetch(id).then(({ results }) => {
+      setResults(results);
+    });
   }, [id]);
 
   return (

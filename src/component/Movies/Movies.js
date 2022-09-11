@@ -13,22 +13,18 @@ const Movies = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    MoviesFetch(query).then(response =>
-      response.json().then(({ results }) => {
-        setResults(results);
-      })
-    );
+    MoviesFetch(query).then(({ results }) => {
+      setResults(results);
+    });
     setQuer(query);
   };
 
   useEffect(() => {
     if (quer) {
       localStorage.setItem('quer', JSON.stringify(quer));
-      MoviesFetch(quer).then(response =>
-        response.json().then(({ results }) => {
+      MoviesFetch(quer).then(({ results }) => {
           setResults(results);
         })
-      );
     }
   }, [quer]);
   const changeQuery = value => {

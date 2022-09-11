@@ -6,9 +6,7 @@ const Home = () => {
   const [trending, setTrending] = useState([]);
   const location = useLocation();
   useEffect(() => {
-    HomeFetch()
-      .then(response => response.json())
-      .then(({ results }) => setTrending(results));
+    HomeFetch().then(({ results }) => setTrending(results));
   }, []);
   return (
     <div>

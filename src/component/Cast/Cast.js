@@ -12,11 +12,9 @@ const Cast = () => {
     setCastPlus(castPlus + 10);
   };
   useEffect(() => {
-    CastFetch(id).then(response =>
-      response.json().then(({ cast }) => {
-        setCast(cast);
-      })
-    );
+    CastFetch(id).then(({ cast }) => {
+      setCast(cast);
+    });
   }, [id]);
   return (
     <ul>
